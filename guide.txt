@@ -1,0 +1,421 @@
+================================================================================
+                    MOBILE KIDNEY WASHING UNIT -  GUIDE
+================================================================================
+made by 10xRashed [the Only  10x Developer in jordan]
+SYSTEM OVERVIEW
+===============
+
+This project consists of two main components:
+1. ESP32 Hardware Controller (dialysis-controller.cpp) - Manages sensors, pumps, and safety systems
+2. Web Dashboard (dialysis-dashboard.html) - Provides real-time monitoring and control interface
+
+HARDWARE SETUP
+===============
+
+Required Components
+-------------------
+
+ESP32 Development Board:
+- Main Controller: ESP32 DevKit or similar
+- Power Supply: 5V/3A minimum
+
+Sensors:
+- DS18B20 Temperature Sensor (Pin 4) - Monitors dialysate temperature
+- Flow Sensor (Pin 2) - Measures fluid flow rate (interrupt-capable pin)
+- Pressure Sensor (Pin 34) - Analog pressure monitoring
+- Conductivity Sensor (Pin 35) - Measures solution conductivity
+
+Actuators & Controls:
+- Water Pump Relay (Pin 18) - Controls main circulation pump
+- Heater Relay (Pin 19) - Temperature control
+- Solenoid Valve A (Pin 21) - Solution A control
+- Solenoid Valve B (Pin 22) - Solution B control
+
+User Interface:
+- 16x2 LCD Display (I2C, Address 0x27) - Local status display
+- Push Button (Pin 0) - Start/Stop system
+- Buzzer (Pin 23) - Audio alerts
+- Status LEDs: Green (Pin 25), Red (Pin 26)
+
+Wiring Diagram
+--------------
+
+ESP32 Pin Layout:
+├── Pin 2  → Flow Sensor (Interrupt)
+├── Pin 4  → DS18B20 Temperature Sensor
+├── Pin 0  → Start/Stop Button (Pull-up)
+├── Pin 18 → Pump Relay (Active LOW)
+├── Pin 19 → Heater Relay (Active LOW)
+├── Pin 21 → Solenoid Valve A (Active LOW)
+├── Pin 22 → Solenoid Valve B (Active LOW)
+├── Pin 23 → Buzzer
+├── Pin 25 → Green LED (System Running)
+├── Pin 26 → Red LED (System Error)
+├── Pin 34 → Pressure Sensor (Analog)
+├── Pin 35 → Conductivity Sensor (Analog)
+└── I2C    → LCD Display (SDA/SCL)
+
+SOFTWARE CONFIGURATION
+======================
+
+1. Arduino IDE Setup
+--------------------
+
+Install required libraries:
+- WiFi.h (ESP32 WiFi)
+- HTTPClient.h (HTTP requests)
+- ArduinoJson.h (JSON handling)
+- Wire.h (I2C communication)
+- LiquidCrystal_I2C.h (LCD display)
+- OneWire.h (1-Wire protocol)
+- DallasTemperature.h (DS18B20 sensor)
+
+2. Network Configuration
+------------------------
+
+Update WiFi credentials in the code:
+
+// WiFi Configuration
+const char* ssid = "YOUR_WIFI_NAME";
+const char* password = "YOUR_WIFI_PASSWORD";
+
+// Dashboard Configuration
+const char* dashboardIP = "192.168.1.100";  // Your computer's IP
+const int dashboardPort = 3000;             // Port number
+
+3. Sensor Calibration
+---------------------
+
+Flow Sensor Calibration:
+const float pulsesPerML = 7.5;  // Adjust based on your flow sensor
+
+Pressure Sensor Calibration:
+// In readAnalogSensors() function
+float pressureVoltage = pressureRaw * (3.3 / 4095.0);
+currentPressure = (pressureVoltage - 0.5) * 200; // Adjust formula
+
+Conductivity Sensor Calibration:
+// In readAnalogSensors() function
+float conductivityVoltage = conductivityRaw * (3.3 / 4095.0);
+currentConductivity = conductivityVoltage * 5; // Adjust multiplier
+
+DASHBOARD SETUP
+===============
+
+1. Network Configuration
+------------------------
+
+The dashboard connects to the ESP32 via HTTP requests. Ensure both devices are on the same network.
+
+2. IP Address Configuration
+---------------------------
+
+Find your computer's IP address:
+- Windows: ipconfig
+- Mac/Linux: ifconfig
+
+Update the ESP32 code with your computer's IP address.
+
+3. Running the Dashboard
+------------------------
+
+Option 1: Direct HTML File
+1. Save dialysis-dashboard.html to your computer
+2. Open with any modern web browser
+3. The dashboard will use mock data for demonstration
+
+Option 2: Local Web Server
+1. Install a local web server (e.g., Live Server extension in VS Code)
+2. Serve the HTML file
+3. Access via http://localhost:3000 or similar
+
+SYSTEM OPERATION
+================
+
+Startup Sequence
+----------------
+
+1. Power On: ESP32 initializes all components
+2. WiFi Connection: Connects to configured network
+3. Sensor Check: Verifies all sensors are responding
+4. Ready State: System displays "Press to Start"
+
+Normal Operation
+----------------
+
+Temperature Control:
+- Target: 37°C ± 0.5°C
+- Heater Control: Automatic with hysteresis
+- Safety: Shuts down if temperature exceeds 38°C or drops below 16°C
+
+Flow Control:
+- Solution A: 1000mL target volume
+- Solution B: 500mL target volume
+- Automatic Switching: A → B → Stop
+
+Pressure Monitoring:
+- Normal Range: 50-300 kPa
+- High Pressure Alarm: >350 kPa triggers shutdown
+
+Conductivity Monitoring:
+- Normal Range: 13-15 µS/cm
+- Critical Parameter: Affects dialysate quality
+
+Safety Features
+---------------
+
+Automatic Shutdowns:
+- Temperature out of range
+- High pressure detection
+- Sensor failures
+- Manual emergency stop
+
+Alarm System:
+- Audio: Buzzer alerts
+- Visual: LED indicators
+- Display: LCD error messages
+- Remote: Dashboard notifications
+
+DASHBOARD FEATURES
+==================
+
+Real-Time Monitoring
+--------------------
+- Circular Progress Indicators: Visual representation of sensor values
+- Status Badges: Normal/Alert/Error states
+- Auto-Refresh: Updates every 2 seconds
+- Connection Status: WiFi and device connectivity
+
+Alert System
+------------
+- Parameter Alerts: Out-of-range warnings
+- Device Alerts: Connection and hardware issues
+- Visual Indicators: Color-coded status system
+
+Control Functions
+-----------------
+- Start/Pause Monitoring: Remote control capability
+- Manual Refresh: Force data update
+- System Status: Overall health monitoring
+
+TROUBLESHOOTING
+===============
+
+Common Issues
+-------------
+
+WiFi Connection Problems:
+// Check serial monitor for connection status
+Serial.println("WiFi connected!");
+Serial.print("IP address: ");
+Serial.println(WiFi.localIP());
+
+Sensor Reading Issues:
+- Temperature: Check DS18B20 wiring and power
+- Flow: Verify interrupt pin connection
+- Pressure/Conductivity: Check analog pin connections
+
+Dashboard Not Updating:
+1. Verify IP address configuration
+2. Check network connectivity
+3. Ensure firewall allows connections
+4. Monitor serial output for HTTP errors
+
+Debug Mode
+----------
+
+Enable detailed logging:
+// Add to setup()
+Serial.begin(115200);
+Serial.setDebugOutput(true);
+
+MAINTENANCE
+===========
+
+Regular Checks
+--------------
+- Sensor Calibration: Monthly verification
+- Flow Sensor Cleaning: Remove debris
+- Temperature Sensor: Check thermal contact
+- Electrical Connections: Inspect for corrosion
+
+Software Updates
+----------------
+- OTA Updates: Can be implemented for remote updates
+- Configuration Backup: Save working configurations
+- Version Control: Track code changes
+
+SAFETY CONSIDERATIONS
+=====================
+
+Critical Safety Features
+------------------------
+- Multiple Temperature Sensors: Redundancy for critical parameter
+- Hardware Interlocks: Physical safety switches
+- Watchdog Timer: System reset on software failure
+- Emergency Stop: Immediate system shutdown
+
+Regulatory Compliance
+---------------------
+- Medical Device Standards: Ensure compliance with local regulations
+- Electrical Safety: Proper grounding and isolation
+- Water Safety: Prevent contamination
+
+ADVANCED FEATURES
+=================
+
+Data Logging
+------------
+// Add SD card logging capability
+#include <SD.h>
+#include <SPI.h>
+
+void logData(float temp, float flow, float pressure, float conductivity) {
+  File dataFile = SD.open("dialysis_log.csv", FILE_WRITE);
+  if (dataFile) {
+    dataFile.print(millis());
+    dataFile.print(",");
+    dataFile.print(temp);
+    dataFile.print(",");
+    dataFile.print(flow);
+    dataFile.print(",");
+    dataFile.print(pressure);
+    dataFile.print(",");
+    dataFile.println(conductivity);
+    dataFile.close();
+  }
+}
+
+Remote Monitoring
+-----------------
+- MQTT Integration: For IoT platforms
+- Cloud Connectivity: Remote access capability
+- Mobile App: Smartphone monitoring
+
+Predictive Maintenance
+----------------------
+- Trend Analysis: Monitor parameter drift
+- Alert Thresholds: Predictive warnings
+- Usage Statistics: Track system utilization
+
+STEP-BY-STEP SETUP GUIDE
+=========================
+
+Hardware Assembly
+-----------------
+1. Connect ESP32 to breadboard or PCB
+2. Wire all sensors according to pin diagram
+3. Connect relays for pump and heater control
+4. Install LCD display with I2C connection
+5. Add push button with pull-up resistor
+6. Connect status LEDs and buzzer
+7. Test all connections with multimeter
+
+Software Installation
+--------------------
+1. Install Arduino IDE
+2. Add ESP32 board support
+3. Install required libraries via Library Manager
+4. Open dialysis-controller.cpp
+5. Update WiFi credentials
+6. Update dashboard IP address
+7. Calibrate sensor parameters
+8. Upload code to ESP32
+
+Dashboard Setup
+---------------
+1. Find your computer's IP address
+2. Update ESP32 code with correct IP
+3. Save dialysis-dashboard.html to computer
+4. Open HTML file in web browser
+5. Verify connection status
+6. Test all dashboard functions
+
+System Testing
+--------------
+1. Power on ESP32 system
+2. Verify WiFi connection
+3. Check sensor readings on LCD
+4. Test dashboard connectivity
+5. Verify all safety alarms
+6. Test emergency stop function
+7. Calibrate flow sensor with known volume
+8. Validate temperature control
+
+OPERATING PROCEDURES
+====================
+
+Daily Startup
+-------------
+1. Visual inspection of all connections
+2. Power on system
+3. Wait for WiFi connection
+4. Check sensor readings
+5. Verify dashboard connection
+6. Test emergency stop
+7. Begin monitoring
+
+Normal Operation
+----------------
+1. Press start button or use dashboard
+2. Monitor temperature rise to 37°C
+3. Observe solution A dispensing
+4. Watch automatic switch to solution B
+5. Monitor all parameters continuously
+6. Respond to any alarms immediately
+
+Shutdown Procedure
+------------------
+1. Press stop button or use dashboard
+2. Wait for pump to stop
+3. Verify all relays are off
+4. Check final readings
+5. Save any log data
+6. Power down system
+
+Emergency Procedures
+--------------------
+1. Press emergency stop immediately
+2. Disconnect power if necessary
+3. Check patient safety first
+4. Identify cause of alarm
+5. Do not restart until issue resolved
+6. Document incident
+
+MAINTENANCE SCHEDULE
+====================
+
+Daily:
+- Visual inspection
+- Check sensor readings
+- Verify alarm functions
+
+Weekly:
+- Clean flow sensor
+- Check electrical connections
+- Test emergency procedures
+
+Monthly:
+- Calibrate all sensors
+- Update software if needed
+- Check relay operation
+- Inspect wiring
+
+Quarterly:
+- Full system validation
+- Replace consumable parts
+- Update documentation
+- Training review
+
+CONCLUSION
+==========
+
+This mobile kidney washing unit provides a comprehensive monitoring and control system for dialysis applications. The combination of robust hardware control and intuitive web interface ensures safe and effective operation while maintaining flexibility for customization and expansion.
+
+Remember to always prioritize safety when working with medical devices and ensure proper testing and validation before clinical use.
+
+For technical support or questions, refer to the code comments and serial monitor output for debugging information.
+
+================================================================================
+                                    END OF GUIDE
+================================================================================

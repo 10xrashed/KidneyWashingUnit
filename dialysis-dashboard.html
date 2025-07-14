@@ -1,0 +1,1078 @@
+<!--made by 10xRashed [the Only  10x Developer in jordan]-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Kidney Washing Unit - Advanced Dashboard</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        :root {
+          --primary-color: #2563eb;
+          --secondary-color: #64748b;
+          --success-color: #10b981;
+          --warning-color: #f59e0b;
+          --danger-color: #ef4444;
+          --info-color: #06b6d4;
+          --light-bg: #f8fafc;
+          --dark-text: #2563eb;  /* Changed from dark to blue */
+          --medium-text: #1d4ed8; /* Changed to blue */
+          --light-text: #3b82f6;  /* Changed to blue */
+          --card-bg: rgba(255, 255, 255, 0.95);
+          --glass-bg: rgba(255, 255, 255, 0.1);
+          --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+          --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+          --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+          --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          min-height: 100vh;
+          color: var(--dark-text);
+          overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+          content: '';
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: 
+            radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+          z-index: -1;
+          animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.8; }
+        }
+
+        /* Glass Morphism Navigation */
+        .navbar-glass {
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          box-shadow: var(--shadow-lg);
+        }
+
+        .navbar-brand {
+          font-weight: 700;
+          font-size: 1.25rem;
+          color: white !important;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Enhanced Cards */
+        .glass-card {
+          background: var(--card-bg);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 20px;
+          box-shadow: var(--shadow-xl);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          overflow: hidden;
+          position: relative;
+        }
+
+        .glass-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        }
+
+        .glass-card:hover {
+          transform: translateY(-8px) scale(1.02);
+          box-shadow: var(--shadow-xl), 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Sensor Cards */
+        .sensor-card {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .sensor-card::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: left 0.5s;
+        }
+
+        .sensor-card:hover::after {
+          left: 100%;
+        }
+
+        /* Circular Progress */
+        .circular-progress {
+          position: relative;
+          width: 120px;
+          height: 120px;
+          margin: 0 auto 1rem;
+        }
+
+        .circular-progress svg {
+          width: 100%;
+          height: 100%;
+          transform: rotate(-90deg);
+        }
+
+        .circular-progress .bg-circle {
+          fill: none;
+          stroke: rgba(37, 99, 235, 0.2); /* Changed to blue */
+          stroke-width: 8;
+        }
+
+        .circular-progress .progress-circle {
+          fill: none;
+          stroke-width: 8;
+          stroke-linecap: round;
+          transition: stroke-dasharray 0.5s ease-in-out;
+        }
+
+        .circular-progress .progress-text {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          text-align: center;
+        }
+
+        .progress-value {
+          font-size: 1.5rem;
+          font-weight: 700;
+          line-height: 1;
+          color: var(--primary-color); /* Blue color */
+        }
+
+        .progress-unit {
+          font-size: 0.75rem;
+          color: var(--medium-text);
+          font-weight: 500;
+        }
+
+        /* Status Indicators */
+        .status-indicator {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.5rem 1rem;
+          border-radius: 50px;
+          font-weight: 600;
+          font-size: 0.875rem;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          transition: all 0.3s ease;
+        }
+
+        .status-online {
+          background: linear-gradient(135deg, var(--success-color), #059669);
+          color: white;
+          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .status-offline {
+          background: linear-gradient(135deg, var(--warning-color), #d97706);
+          color: white;
+          box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        }
+
+        .status-error {
+          background: linear-gradient(135deg, var(--danger-color), #dc2626);
+          color: white;
+          box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Enhanced Buttons */
+        .btn-modern {
+          border: none;
+          border-radius: 12px;
+          font-weight: 600;
+          padding: 0.75rem 1.5rem;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .btn-modern::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: left 0.5s;
+        }
+
+        .btn-modern:hover::before {
+          left: 100%;
+        }
+
+        .btn-modern:hover {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-lg);
+        }
+
+        .btn-success-modern {
+          background: linear-gradient(135deg, var(--success-color), #059669);
+          color: white;
+        }
+
+        .btn-warning-modern {
+          background: linear-gradient(135deg, var(--warning-color), #d97706);
+          color: white;
+        }
+
+        .btn-info-modern {
+          background: linear-gradient(135deg, var(--info-color), #0891b2);
+          color: white;
+        }
+
+        /* Alert System */
+        .alert-modern {
+          border: none;
+          border-radius: 16px;
+          padding: 1rem 1.5rem;
+          margin-bottom: 1rem;
+          backdrop-filter: blur(10px);
+          animation: slideInAlert 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .alert-warning-modern {
+          background: rgba(245, 158, 11, 0.1);
+          border-left: 4px solid var(--warning-color);
+          color: #92400e;
+        }
+
+        .alert-danger-modern {
+          background: rgba(239, 68, 68, 0.1);
+          border-left: 4px solid var(--danger-color);
+          color: #991b1b;
+        }
+
+        @keyframes slideInAlert {
+          from {
+            opacity: 0;
+            transform: translateX(-100%);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        /* Typography */
+        .display-4 {
+          font-weight: 700;
+          background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .text-gradient {
+          background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        /* Blue text classes */
+        .text-blue {
+          color: var(--primary-color) !important;
+        }
+
+        .text-blue-medium {
+          color: var(--medium-text) !important;
+        }
+
+        .text-blue-light {
+          color: var(--light-text) !important;
+        }
+
+        /* Card titles and text */
+        .card-title {
+          color: var(--primary-color) !important;
+        }
+
+        .sensor-title {
+          color: var(--primary-color) !important;
+          font-weight: 600;
+        }
+
+        /* Loading Animation */
+        .loading-pulse {
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: .5;
+          }
+        }
+
+        /* Floating Action Button */
+        .fab {
+          position: fixed;
+          bottom: 2rem;
+          right: 2rem;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+          color: white;
+          border: none;
+          box-shadow: var(--shadow-xl);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.5rem;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          z-index: 1000;
+        }
+
+        .fab:hover {
+          transform: scale(1.1);
+          box-shadow: 0 20px 40px rgba(37, 99, 235, 0.4);
+        }
+
+        /* Fix for small text */
+        small {
+          color: var(--medium-text) !important;
+        }
+
+        .text-muted {
+          color: var(--light-text) !important;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+          .circular-progress {
+            width: 100px;
+            height: 100px;
+          }
+
+          .progress-value {
+            font-size: 1.25rem;
+          }
+
+          .navbar-brand {
+            font-size: 1rem;
+          }
+
+          .glass-card {
+            border-radius: 16px;
+          }
+
+          .fab {
+            bottom: 1rem;
+            right: 1rem;
+            width: 50px;
+            height: 50px;
+            font-size: 1.25rem;
+          }
+        }
+
+        @media (max-width: 576px) {
+          .container-fluid {
+            padding-left: 1rem;
+            padding-right: 1rem;
+          }
+
+          .circular-progress {
+            width: 80px;
+            height: 80px;
+          }
+
+          .progress-value {
+            font-size: 1rem;
+          }
+
+          .progress-unit {
+            font-size: 0.625rem;
+          }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+          :root {
+            --card-bg: rgba(30, 41, 59, 0.95);
+            --dark-text: #60a5fa;
+            --medium-text: #93c5fd;
+            --light-text: #dbeafe;
+          }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+          *,
+          *::before,
+          *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
+        }
+
+        /* Focus styles for accessibility */
+        .btn-modern:focus,
+        .fab:focus {
+          outline: 2px solid var(--primary-color);
+          outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-glass fixed-top">
+        <div class="container-fluid">
+            <span class="navbar-brand">
+                <i class="bi bi-droplet-fill me-2"></i>
+                Mobile Kidney Washing Unit
+            </span>
+            <div id="device-status" class="status-indicator status-offline">
+                <div class="spinner-border spinner-border-sm me-2" role="status" id="connection-spinner">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <span id="status-text">Connecting...</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid py-4" style="margin-top: 80px;">
+        <!-- Hero Section -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="glass-card p-4">
+                    <div class="text-center">
+                        <h1 class="display-4 mb-3">Portable Dialysis Station</h1>
+                        <p class="lead text-gradient mb-4">
+                            Advanced real-time monitoring system ensuring safe and effective dialysis treatment
+                        </p>
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <div class="d-flex justify-content-between align-items-center p-3 rounded-3" style="background: rgba(37, 99, 235, 0.1);">
+                                    <div class="text-start">
+                                        <small class="text-blue-medium d-block">Last Updated</small>
+                                        <span id="last-updated" class="fw-semibold text-blue">--</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <small class="text-blue-medium d-block">Auto Refresh</small>
+                                        <span id="auto-refresh-status" class="fw-semibold text-success">ON</span>
+                                    </div>
+                                    <div class="text-end">
+                                        <small class="text-blue-medium d-block">Update Interval</small>
+                                        <span class="fw-semibold text-blue">2 seconds</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sensor Data Cards -->
+        <div class="row g-4 mb-5">
+            <!-- Temperature Card -->
+            <div class="col-lg-3 col-md-6">
+                <div class="glass-card sensor-card p-4 h-100">
+                    <div class="text-center">
+                        <div class="circular-progress mb-3">
+                            <svg viewBox="0 0 120 120">
+                                <circle class="bg-circle" cx="60" cy="60" r="54"></circle>
+                                <circle class="progress-circle" cx="60" cy="60" r="54" 
+                                        stroke="#ef4444" stroke-dasharray="0 339.292" id="temp-circle"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <div class="progress-value" id="temperature-value">--</div>
+                                <div class="progress-unit">°C</div>
+                            </div>
+                        </div>
+                        <h5 class="sensor-title mb-2">Water Temperature</h5>
+                        <small class="text-blue-light">Normal: 35-40°C</small>
+                        <div class="mt-3">
+                            <span class="badge bg-light text-primary" id="temp-status">Monitoring</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flow Rate Card -->
+            <div class="col-lg-3 col-md-6">
+                <div class="glass-card sensor-card p-4 h-100">
+                    <div class="text-center">
+                        <div class="circular-progress mb-3">
+                            <svg viewBox="0 0 120 120">
+                                <circle class="bg-circle" cx="60" cy="60" r="54"></circle>
+                                <circle class="progress-circle" cx="60" cy="60" r="54" 
+                                        stroke="#06b6d4" stroke-dasharray="0 339.292" id="flow-circle"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <div class="progress-value" id="flow-value">--</div>
+                                <div class="progress-unit">L/min</div>
+                            </div>
+                        </div>
+                        <h5 class="sensor-title mb-2">Flow Rate</h5>
+                        <small class="text-blue-light">Normal: 200-500 L/min</small>
+                        <div class="mt-3">
+                            <span class="badge bg-light text-primary" id="flow-status">Monitoring</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pressure Card -->
+            <div class="col-lg-3 col-md-6">
+                <div class="glass-card sensor-card p-4 h-100">
+                    <div class="text-center">
+                        <div class="circular-progress mb-3">
+                            <svg viewBox="0 0 120 120">
+                                <circle class="bg-circle" cx="60" cy="60" r="54"></circle>
+                                <circle class="progress-circle" cx="60" cy="60" r="54" 
+                                        stroke="#10b981" stroke-dasharray="0 339.292" id="pressure-circle"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <div class="progress-value" id="pressure-value">--</div>
+                                <div class="progress-unit">kPa</div>
+                            </div>
+                        </div>
+                        <h5 class="sensor-title mb-2">Pressure</h5>
+                        <small class="text-blue-light">Normal: 50-300 kPa</small>
+                        <div class="mt-3">
+                            <span class="badge bg-light text-primary" id="pressure-status">Monitoring</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conductivity Card -->
+            <div class="col-lg-3 col-md-6">
+                <div class="glass-card sensor-card p-4 h-100">
+                    <div class="text-center">
+                        <div class="circular-progress mb-3">
+                            <svg viewBox="0 0 120 120">
+                                <circle class="bg-circle" cx="60" cy="60" r="54"></circle>
+                                <circle class="progress-circle" cx="60" cy="60" r="54" 
+                                        stroke="#f59e0b" stroke-dasharray="0 339.292" id="conductivity-circle"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <div class="progress-value" id="conductivity-value">--</div>
+                                <div class="progress-unit">µS/cm</div>
+                            </div>
+                        </div>
+                        <h5 class="sensor-title mb-2">Conductivity</h5>
+                        <small class="text-blue-light">Normal: 13-15 µS/cm</small>
+                        <div class="mt-3">
+                            <span class="badge bg-light text-primary" id="conductivity-status">Monitoring</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Status and Controls -->
+        <div class="row">
+            <div class="col-12">
+                <div class="glass-card p-4">
+                    <h4 class="fw-bold mb-4 text-gradient">System Status & Controls</h4>
+                    
+                    <!-- Status Overview -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="me-3">
+                                    <i class="bi bi-cpu fs-3 text-primary"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 text-blue">Device Status</h6>
+                                    <div id="device-status-badge" class="status-indicator status-offline">
+                                        <i class="bi bi-power"></i>
+                                        <span id="device-status-text">Connecting</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="me-3">
+                                    <i class="bi bi-shield-check fs-3 text-success"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 text-blue">Parameters Status</h6>
+                                    <div id="parameters-status-badge" class="status-indicator status-offline">
+                                        <i class="bi bi-hourglass-split"></i>
+                                        <span id="parameters-status-text">Checking</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alert Container -->
+                    <div id="alert-container" class="mb-4"></div>
+
+                    <!-- Control Buttons -->
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="d-flex flex-wrap gap-3">
+                                <button class="btn btn-modern btn-success-modern" onclick="startMonitoring()">
+                                    <i class="bi bi-play-fill me-2"></i>Start Monitoring
+                                </button>
+                                <button class="btn btn-modern btn-warning-modern" onclick="pauseMonitoring()">
+                                    <i class="bi bi-pause-fill me-2"></i>Pause
+                                </button>
+                                <button class="btn btn-modern btn-info-modern" onclick="refreshData()">
+                                    <i class="bi bi-arrow-clockwise me-2"></i>Refresh
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="mt-3 mt-md-0">
+                                <small class="text-blue-medium d-block">System Performance</small>
+                                <div class="d-flex align-items-center justify-content-end">
+                                    <div class="loading-pulse me-2" style="width: 8px; height: 8px; background: var(--success-color); border-radius: 50%;"></div>
+                                    <span class="fw-semibold text-success">Optimal</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" onclick="refreshData()" title="Quick Refresh">
+        <i class="bi bi-arrow-clockwise"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-4">
+        <div class="container">
+            <div class="glass-card p-3">
+                <div class="text-center">
+                    <p class="mb-0 text-blue-medium">
+                        © 2025 Mobile Kidney Washing Unit Project | 
+                        <span class="text-gradient fw-semibold">Advanced Medical Monitoring System</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        class AdvancedDialysisDashboard {
+          constructor() {
+            this.isMonitoring = false
+            this.refreshInterval = null
+            this.mockMode = false
+
+            this.ranges = {
+              temperature: { min: 35, max: 40 },
+              flowRate: { min: 200, max: 500 },
+              pressure: { min: 50, max: 300 },
+              conductivity: { min: 13, max: 15 },
+            }
+
+            this.maxValues = {
+              temperature: 50,
+              flowRate: 600,
+              pressure: 400,
+              conductivity: 20
+            }
+
+            this.init()
+          }
+
+          init() {
+            console.log("🏥 Initializing Advanced Dialysis Dashboard...")
+            this.startMonitoring()
+            this.setupEventListeners()
+            this.hideConnectionSpinner()
+          }
+
+          hideConnectionSpinner() {
+            setTimeout(() => {
+              const spinner = document.getElementById('connection-spinner')
+              if (spinner) {
+                spinner.style.display = 'none'
+              }
+            }, 2000)
+          }
+
+          setupEventListeners() {
+            document.addEventListener("visibilitychange", () => {
+              if (document.hidden) {
+                this.pauseMonitoring()
+              } else {
+                this.startMonitoring()
+              }
+            })
+
+            window.addEventListener("focus", () => this.startMonitoring())
+            window.addEventListener("blur", () => this.pauseMonitoring())
+          }
+
+          generateMockData() {
+            const baseTemp = 37.5
+            const baseFlow = 350
+            const basePressure = 150
+            const baseConductivity = 14
+
+            const temperature = baseTemp + (Math.random() - 0.5) * 4
+            const flowRate = baseFlow + (Math.random() - 0.5) * 100
+            const pressure = basePressure + (Math.random() - 0.5) * 50
+            const conductivity = baseConductivity + (Math.random() - 0.5) * 2
+
+            const statusRandom = Math.random()
+            let deviceStatus
+            if (statusRandom > 0.95) {
+              deviceStatus = "error"
+            } else if (statusRandom > 0.9) {
+              deviceStatus = "offline"
+            } else {
+              deviceStatus = "online"
+            }
+
+            return {
+              temperature: Math.max(0, temperature),
+              flowRate: Math.max(0, flowRate),
+              pressure: Math.max(0, pressure),
+              conductivity: Math.max(0, conductivity),
+              deviceStatus: deviceStatus,
+              timestamp: new Date().toISOString(),
+            }
+          }
+
+          async fetchSensorData() {
+            try {
+              await new Promise((resolve) => setTimeout(resolve, 200))
+              const data = this.generateMockData()
+              this.updateDashboard(data)
+            } catch (error) {
+              console.error("❌ Error fetching sensor data:", error)
+              this.handleError(error)
+            }
+          }
+
+          updateDashboard(data) {
+            this.updateCircularProgress("temperature", data.temperature, this.maxValues.temperature)
+            this.updateCircularProgress("flow", data.flowRate, this.maxValues.flowRate)
+            this.updateCircularProgress("pressure", data.pressure, this.maxValues.pressure)
+            this.updateCircularProgress("conductivity", data.conductivity, this.maxValues.conductivity)
+
+            this.updateDeviceStatus(data.deviceStatus)
+            this.updateParameterStatus(data)
+            this.updateTimestamp(data.timestamp)
+            this.checkAlerts(data)
+          }
+
+          updateCircularProgress(sensor, value, maxValue) {
+            const circle = document.getElementById(`${sensor}-circle`)
+            const valueElement = document.getElementById(`${sensor}-value`)
+            const statusElement = document.getElementById(`${sensor}-status`)
+            
+            if (circle && valueElement) {
+              const percentage = Math.min((value / maxValue) * 100, 100)
+              const circumference = 2 * Math.PI * 54
+              const strokeDasharray = (percentage / 100) * circumference
+              
+              circle.style.strokeDasharray = `${strokeDasharray} ${circumference}`
+              
+              // Format value based on sensor type
+              let displayValue
+              if (sensor === 'temperature' || sensor === 'conductivity') {
+                displayValue = value.toFixed(1)
+              } else {
+                displayValue = Math.round(value)
+              }
+              
+              valueElement.textContent = displayValue
+
+              // Update status badge
+              const sensorName = sensor === 'flow' ? 'flowRate' : sensor
+              const isNormal = this.isValueNormal(sensorName, value)
+              
+              if (statusElement) {
+                if (isNormal) {
+                  statusElement.className = 'badge bg-success text-white'
+                  statusElement.textContent = 'Normal'
+                } else {
+                  statusElement.className = 'badge bg-warning text-white'
+                  statusElement.textContent = 'Alert'
+                }
+              }
+            }
+          }
+
+          updateDeviceStatus(status) {
+            const statusBadge = document.getElementById("device-status")
+            const statusText = document.getElementById("status-text")
+            const deviceStatusBadge = document.getElementById("device-status-badge")
+            const deviceStatusText = document.getElementById("device-status-text")
+
+            const statusConfig = {
+              online: { 
+                class: "status-online", 
+                icon: "check-circle-fill", 
+                text: "Online" 
+              },
+              offline: { 
+                class: "status-offline", 
+                icon: "exclamation-triangle-fill", 
+                text: "Offline" 
+              },
+              error: { 
+                class: "status-error", 
+                icon: "x-circle-fill", 
+                text: "Error" 
+              },
+            }
+
+            const config = statusConfig[status] || statusConfig.offline
+
+            if (statusBadge) {
+              statusBadge.className = `status-indicator ${config.class}`
+              statusBadge.innerHTML = `<i class="bi bi-${config.icon}"></i><span>${config.text}</span>`
+            }
+
+            if (statusText) statusText.textContent = config.text
+            if (deviceStatusBadge) {
+              deviceStatusBadge.className = `status-indicator ${config.class}`
+              deviceStatusBadge.innerHTML = `<i class="bi bi-cpu"></i><span>${config.text}</span>`
+            }
+            if (deviceStatusText) deviceStatusText.textContent = config.text
+          }
+
+          updateParameterStatus(data) {
+            const allNormal =
+              this.isValueNormal("temperature", data.temperature) &&
+              this.isValueNormal("flowRate", data.flowRate) &&
+              this.isValueNormal("pressure", data.pressure) &&
+              this.isValueNormal("conductivity", data.conductivity)
+
+            const badge = document.getElementById("parameters-status-badge")
+            const text = document.getElementById("parameters-status-text")
+
+            if (allNormal) {
+              badge.className = "status-indicator status-online"
+              badge.innerHTML = '<i class="bi bi-shield-check"></i><span>All Normal</span>'
+              text.textContent = "All Normal"
+            } else {
+              badge.className = "status-indicator status-offline"
+              badge.innerHTML = '<i class="bi bi-shield-exclamation"></i><span>Check Required</span>'
+              text.textContent = "Check Required"
+            }
+          }
+
+          updateTimestamp(timestamp) {
+            const element = document.getElementById("last-updated")
+            if (element) {
+              const date = new Date(timestamp)
+              element.textContent = date.toLocaleTimeString()
+            }
+          }
+
+          checkAlerts(data) {
+            const alertContainer = document.getElementById("alert-container")
+            alertContainer.innerHTML = ""
+
+            const alerts = []
+
+            if (!this.isValueNormal("temperature", data.temperature)) {
+              alerts.push({
+                type: "warning",
+                icon: "thermometer-half",
+                message: `Temperature ${data.temperature.toFixed(1)}°C is outside normal range (35-40°C)`,
+              })
+            }
+
+            if (!this.isValueNormal("flowRate", data.flowRate)) {
+              alerts.push({
+                type: "warning",
+                icon: "droplet",
+                message: `Flow rate ${data.flowRate.toFixed(0)} L/min is outside normal range (200-500 L/min)`,
+              })
+            }
+
+            if (!this.isValueNormal("pressure", data.pressure)) {
+              alerts.push({
+                type: "warning",
+                icon: "speedometer2",
+                message: `Pressure ${data.pressure.toFixed(0)} kPa is outside normal range (50-300 kPa)`,
+              })
+            }
+
+            if (!this.isValueNormal("conductivity", data.conductivity)) {
+              alerts.push({
+                type: "danger",
+                icon: "lightning-fill",
+                message: `Conductivity ${data.conductivity.toFixed(1)} µS/cm is outside normal range (13-15 µS/cm)`,
+              })
+            }
+
+            if (data.deviceStatus === "error") {
+              alerts.push({
+                type: "danger",
+                icon: "exclamation-triangle-fill",
+                message: "Device error detected! Please check system immediately.",
+              })
+            }
+
+            alerts.forEach((alert) => {
+              const alertDiv = document.createElement("div")
+              alertDiv.className = `alert-modern alert-${alert.type}-modern`
+              alertDiv.innerHTML = `
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-${alert.icon} me-3 fs-5"></i>
+                  <div class="flex-grow-1">
+                    <strong>Alert:</strong> ${alert.message}
+                  </div>
+                  <button type="button" class="btn-close" onclick="this.parentElement.parentElement.remove()"></button>
+                </div>
+              `
+              alertContainer.appendChild(alertDiv)
+            })
+          }
+
+          isValueNormal(parameter, value) {
+            const range = this.ranges[parameter]
+            return range && value >= range.min && value <= range.max
+          }
+
+          handleError(error) {
+            const alertContainer = document.getElementById("alert-container")
+            const alertDiv = document.createElement("div")
+            alertDiv.className = "alert-modern alert-danger-modern"
+            alertDiv.innerHTML = `
+              <div class="d-flex align-items-center">
+                <i class="bi bi-wifi-off me-3 fs-5"></i>
+                <div class="flex-grow-1">
+                  <strong>Connection Error:</strong> Using simulated data for demonstration.
+                </div>
+                <button type="button" class="btn-close" onclick="this.parentElement.parentElement.remove()"></button>
+              </div>
+            `
+            alertContainer.appendChild(alertDiv)
+            this.updateDeviceStatus("error")
+          }
+
+          startMonitoring() {
+            if (!this.isMonitoring) {
+              console.log("▶️ Starting monitoring...")
+              this.isMonitoring = true
+              this.fetchSensorData()
+              this.refreshInterval = setInterval(() => {
+                this.fetchSensorData()
+              }, 2000)
+
+              const statusElement = document.getElementById("auto-refresh-status")
+              if (statusElement) {
+                statusElement.textContent = "ON"
+                statusElement.className = "fw-semibold text-success"
+              }
+            }
+          }
+
+          pauseMonitoring() {
+            if (this.isMonitoring) {
+              console.log("⏸️ Pausing monitoring...")
+              this.isMonitoring = false
+              if (this.refreshInterval) {
+                clearInterval(this.refreshInterval)
+                this.refreshInterval = null
+              }
+              const statusElement = document.getElementById("auto-refresh-status")
+              if (statusElement) {
+                statusElement.textContent = "PAUSED"
+                statusElement.className = "fw-semibold text-warning"
+              }
+            }
+          }
+
+          refreshData() {
+            console.log("🔄 Manual refresh...")
+            this.fetchSensorData()
+            
+            // Visual feedback for manual refresh
+            const fab = document.querySelector('.fab')
+            if (fab) {
+              fab.style.transform = 'scale(0.9) rotate(180deg)'
+              setTimeout(() => {
+                fab.style.transform = 'scale(1) rotate(0deg)'
+              }, 200)
+            }
+          }
+        }
+
+        // Global functions
+        function startMonitoring() {
+          if (window.dashboard) {
+            window.dashboard.startMonitoring()
+          }
+        }
+
+        function pauseMonitoring() {
+          if (window.dashboard) {
+            window.dashboard.pauseMonitoring()
+          }
+        }
+
+        function refreshData() {
+          if (window.dashboard) {
+            window.dashboard.refreshData()
+          }
+        }
+
+        // Initialize dashboard
+        document.addEventListener("DOMContentLoaded", () => {
+          console.log("🚀 Initializing Advanced Dialysis Dashboard...")
+          window.dashboard = new AdvancedDialysisDashboard()
+        })
+
+        window.addEventListener("beforeunload", () => {
+          if (window.dashboard) {
+            window.dashboard.pauseMonitoring()
+          }
+        })
+    </script>
+</body>
+</html>
