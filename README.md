@@ -1,313 +1,172 @@
-# made by 10xRashed [the Only  10x Developer in jordan]
-# Mobile Kidney Washing Unit
 
-A comprehensive real-time monitoring and control system for portable dialysis applications, featuring ESP32-based hardware control and a modern web dashboard interface.
+# Real-Time Portable Dialysis Monitoring System
 
-## 🏥 Overview
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Platform](https://img.shields.io/badge/Platform-ESP32-blue.svg)](https://www.espressif.com/en/products/socs/esp32)
+[![Framework](https://img.shields.io/badge/Framework-Arduino-00979D.svg)](https://www.arduino.cc/)
+[![UI](https://img.shields.io/badge/UI-HTML/CSS/JS-orange.svg)](#)
 
-This project provides a complete solution for monitoring critical parameters in dialysis treatment, ensuring patient safety through continuous monitoring of temperature, flow rate, pressure, and conductivity. The system combines robust embedded hardware control with an intuitive web-based dashboard for real-time visualization and alerts.
+A comprehensive, ESP32-based solution for monitoring and controlling portable dialysis applications. This project ensures patient safety by tracking critical parameters in real-time and providing instant alerts via a modern, glass-morphism web dashboard.
 
-## ✨ Features
+## 🏥 Project Overview
 
-### Hardware Controller (ESP32)
-- **Real-time Sensor Monitoring**: Temperature, flow rate, pressure, and conductivity
-- **Automatic Safety Controls**: Temperature regulation and pressure monitoring
-- **Solution Management**: Automated dispensing of Solution A and Solution B
-- **WiFi Connectivity**: Wireless data transmission to dashboard
-- **Local Display**: 16x2 LCD for on-device status monitoring
-- **Audio/Visual Alerts**: Buzzer and LED indicators for system status
-- **Emergency Stop**: Immediate system shutdown capability
+This system provides a complete hardware and software solution for monitoring the key parameters of a dialysis treatment: **temperature, flow rate, pressure, and conductivity**. The core of the system is an ESP32 microcontroller that manages sensors, controls pumps and heaters, and provides immediate local feedback.
 
-### Web Dashboard
-- **Modern UI**: Glass-morphism design with responsive layout
-- **Real-time Visualization**: Circular progress indicators for all parameters
-- **Alert System**: Visual and audible notifications for out-of-range values
-- **Status Monitoring**: Device connectivity and parameter health tracking
-- **Remote Control**: Start/stop monitoring from web interface
-- **Mobile Responsive**: Optimized for desktop, tablet, and mobile devices
+All data is transmitted wirelessly to a sleek, responsive web dashboard, allowing for remote visualization, status monitoring, and control, ensuring the highest level of safety and operational awareness.
 
-## 🔧 Hardware Requirements
+## ✨ Key Features
 
-### Core Components
-- **ESP32 Development Board** (DevKit or similar)
-- **DS18B20 Temperature Sensor** - Waterproof version recommended
-- **Flow Sensor** - Hall effect or turbine type with pulse output
-- **Pressure Sensor** - 0-5V analog output, 0-400 kPa range
-- **Conductivity Sensor** - Analog output, suitable for aqueous solutions
+### 🔬 Hardware Controller (ESP32)
 
-### Control Components
-- **Relay Module (4-channel)** - For pump and heater control
-- **Solenoid Valves (2x)** - For solution A and B control
-- **Water Pump** - 12V DC, suitable for medical applications
-- **Heating Element** - 12V DC, with appropriate wattage
+-   **Multi-Sensor Integration**: Continuously monitors Temperature, Flow Rate, Pressure, and Conductivity.
+-   **Automated Safety Controls**: Manages a heating element to maintain optimal temperature and shuts down the system if pressure exceeds safe limits.
+-   **Solution Management**: Controls two solenoid valves for precise dispensing of Solution A and Solution B.
+-   **Wireless Data Transmission**: Utilizes built-in WiFi to send real-time data to the web dashboard.
+-   **On-Device Interface**: A 16x2 I2C LCD provides immediate, at-a-glance status updates.
+-   **Audio-Visual Alerts**: An onboard buzzer and status LEDs (Green/Red) provide clear system feedback.
+-   **Emergency Stop**: A physical button allows for immediate system shutdown in critical situations.
 
-### Interface Components
-- **16x2 LCD Display** - I2C interface (PCF8574)
-- **Push Button** - Momentary, normally open
-- **Buzzer** - Active or passive, 5V compatible
-- **LEDs** - Green and Red status indicators
-- **Resistors** - Pull-up resistors for buttons and sensors
+### 🖥️ Web Dashboard
 
-## 📋 Software Requirements
+-   **Modern Glass-morphism UI**: A clean, intuitive, and visually appealing interface.
+-   **Real-Time Data Visualization**: Circular progress indicators and clear readouts for all sensor data.
+-   **Dynamic Alert System**: Visual and audible browser notifications for any parameter that falls outside the safe range.
+-   **Status Monitoring**: Clear indicators for device connectivity and overall system health.
+-   **Remote Control**: Start and stop the monitoring process directly from the web interface.
+-   **Fully Responsive**: The layout is optimized for desktops, tablets, and mobile phones.
 
-### Arduino IDE Setup
-\`\`\`bash
-# Install Arduino IDE (version 1.8.19 or later)
-# Add ESP32 board support:
-# File → Preferences → Additional Board Manager URLs:
-# https://dl.espressif.com/dl/package_esp32_index.json
-\`\`\`
+## 🛠️ System Architecture
 
-### Required Libraries
-\`\`\`cpp
-WiFi                    // ESP32 WiFi (built-in)
-HTTPClient             // HTTP requests (built-in)
-ArduinoJson            // JSON handling
-Wire                   // I2C communication (built-in)
-LiquidCrystal_I2C     // LCD display control
-OneWire               // 1-Wire protocol
-DallasTemperature     // DS18B20 temperature sensor
-\`\`\`
+The system operates in a simple, robust loop: the ESP32 gathers data from all connected sensors, processes it, performs safety checks, and then sends a structured JSON payload over WiFi to the web dashboard, which then visualizes the information.
 
-Install libraries via Arduino IDE Library Manager or:
-\`\`\`bash
-# Using Arduino CLI
-arduino-cli lib install "ArduinoJson"
-arduino-cli lib install "LiquidCrystal I2C"
-arduino-cli lib install "OneWire"
-arduino-cli lib install "DallasTemperature"
-\`\`\`
+```
+[Sensors] --> [ESP32 Controller] --(WiFi)--> [Web Dashboard]
+```
 
-## 🚀 Quick Start
+## ⚙️ Technology Stack
 
-### 1. Hardware Assembly
-\`\`\`
+| Hardware                    | Software & Dashboard         |
+| --------------------------- | ---------------------------- |
+| ESP32 Development Board     | Arduino IDE / C++            |
+| DS18B20 Temperature Sensor  | **Arduino Libraries:**       |
+| Hall Effect Flow Sensor     | `WiFi`, `HTTPClient`         |
+| Analog Pressure Sensor      | `ArduinoJson`                |
+| Analog Conductivity Sensor  | `LiquidCrystal_I2C`          |
+| 4-Channel Relay Module      | `OneWire`, `DallasTemperature` |
+| 12V Solenoid Valves (x2)    | **Dashboard:**               |
+| 12V DC Water Pump           | HTML5                        |
+| 12V DC Heating Element      | CSS3 (Flexbox, Grid)         |
+| 16x2 I2C LCD Display        | Vanilla JavaScript (Fetch API) |
+| Push Buttons, LEDs, Buzzer  |                              |
+
+## 🔌 Hardware Wiring
+
+Connect the components to the ESP32 as follows. Ensure all power connections (12V for pump/heater/valves, 5V for sensors/relays) are properly regulated and sourced.
+
+```
 ESP32 Pin Connections:
-├── Pin 2  → Flow Sensor (Interrupt)
-├── Pin 4  → DS18B20 Temperature Sensor
-├── Pin 0  → Start/Stop Button (Pull-up)
-├── Pin 18 → Pump Relay (Active LOW)
-├── Pin 19 → Heater Relay (Active LOW)
-├── Pin 21 → Solenoid Valve A (Active LOW)
-├── Pin 22 → Solenoid Valve B (Active LOW)
+├── Pin 2  → Flow Sensor (Interrupt Pin)
+├── Pin 4  → DS18B20 Temperature Sensor (OneWire Bus)
+├── Pin 0  → Start/Stop Button (Active LOW, requires pull-up)
+├── Pin 18 → Pump Relay Control (Active LOW)
+├── Pin 19 → Heater Relay Control (Active LOW)
+├── Pin 21 → Solenoid Valve A Relay Control (Active LOW)
+├── Pin 22 → Solenoid Valve B Relay Control (Active LOW)
 ├── Pin 23 → Buzzer
-├── Pin 25 → Green LED (System Running)
-├── Pin 26 → Red LED (System Error)
-├── Pin 34 → Pressure Sensor (Analog)
-├── Pin 35 → Conductivity Sensor (Analog)
-└── I2C    → LCD Display (SDA: Pin 21, SCL: Pin 22)
-\`\`\`
+├── Pin 25 → Green LED (System OK)
+├── Pin 26 → Red LED (System Error/Stopped)
+├── Pin 34 → Pressure Sensor (Analog Input)
+├── Pin 35 → Conductivity Sensor (Analog Input)
+├── SDA    → LCD Display SDA
+└── SCL    → LCD Display SCL
+```
 
-### 2. Software Configuration
+## 🚀 Setup and Installation
 
-1. **Clone or download the project files**
-2. **Open \`dialysis-controller.cpp\` in Arduino IDE**
-3. **Update WiFi credentials:**
-   \`\`\`cpp
-   const char* ssid = "YOUR_WIFI_NAME";
-   const char* password = "YOUR_WIFI_PASSWORD";
-   \`\`\`
-4. **Set dashboard IP address:**
-   \`\`\`cpp
-   const char* dashboardIP = "192.168.1.100";  // Your computer's IP
-   \`\`\`
-5. **Upload code to ESP32**
+### 1. Configure the Arduino Environment
 
-### 3. Dashboard Setup
+1.  **Install Arduino IDE** (version 1.8.19 or later).
+2.  **Add ESP32 Board Support**:
+    -   Go to `File` → `Preferences`.
+    -   In "Additional Board Manager URLs", add:
+        ```
+        https://dl.espressif.com/dl/package_esp32_index.json
+        ```
+    -   Go to `Tools` → `Board` → `Boards Manager`, search for "esp32", and install it.
+3.  **Install Required Libraries**:
+    -   Go to `Sketch` → `Include Library` → `Manage Libraries`.
+    -   Search for and install the following:
+        -   `ArduinoJson`
+        -   `LiquidCrystal I2C`
+        -   `OneWire`
+        -   `DallasTemperature`
 
-1. **Find your computer's IP address:**
-   - Windows: \`ipconfig\`
-   - Mac/Linux: \`ifconfig\`
+### 2. Flash the ESP32 Controller
 
-2. **Open \`dialysis-dashboard.html\` in a web browser**
-   - For local file: Double-click the HTML file
-   - For web server: Use Live Server extension in VS Code
+1.  Clone this repository or download the project files.
+2.  Open the `dialysis-controller.cpp` file in the Arduino IDE.
+3.  **Update WiFi Credentials**: Modify the following lines with your network details:
+    ```cpp
+    const char* ssid = "YOUR_WIFI_NAME";
+    const char* password = "YOUR_WIFI_PASSWORD";
+    ```
+4.  **Set Dashboard IP Address**: Find your computer's local IP address and update this line:
+    ```cpp
+    const char* dashboardIP = "192.168.1.100";  // Replace with your computer's IP
+    ```5.  Connect your ESP32 board, select the correct COM port and board type from the `Tools` menu, and click the **Upload** button.
 
-3. **Verify connection between ESP32 and dashboard**
+### 3. Launch the Web Dashboard
 
-## ⚙️ Configuration
+1.  Ensure your computer is connected to the same WiFi network as the ESP32.
+2.  Open the `dialysis-dashboard.html` file in any modern web browser (e.g., Chrome, Firefox).
+3.  Power on the ESP32. The dashboard should automatically start receiving data and update the display.
 
-### Sensor Calibration
+## 🔧 Configuration and Calibration
 
-#### Flow Sensor
-\`\`\`cpp
-const float pulsesPerML = 7.5;  // Adjust based on your sensor specifications
-\`\`\`
+Fine-tune the system by adjusting the constants defined at the top of the `dialysis-controller.cpp` file.
 
-#### Pressure Sensor
-\`\`\`cpp
-// Calibrate based on sensor datasheet
-currentPressure = (pressureVoltage - 0.5) * 200; // Example: 0.5V offset, 200 kPa/V
-\`\`\`
+-   **Sensor Calibration**: Adjust the multipliers and offsets for the flow, pressure, and conductivity sensors to match your specific hardware datasheets.
+    ```cpp
+    const float pulsesPerML = 7.5; // From flow sensor datasheet
+    // Example pressure calibration: 0.5V offset, 200 kPa/V sensitivity
+    currentPressure = (pressureVoltage - 0.5) * 200;
+    ```
+-   **Operating Parameters**: Set the normal and critical thresholds for all monitored values.
+-   **Solution Volumes**: Define the target volumes (in mL) for Solution A and B.
 
-#### Conductivity Sensor
-\`\`\`cpp
-// Adjust multiplier based on sensor characteristics
-currentConductivity = conductivityVoltage * 5; // Example: 5 µS/cm per volt
-\`\`\`
-
-### Operating Parameters
-
-| Parameter | Normal Range | Critical Limits |
-|-----------|--------------|-----------------|
-| Temperature | 35-40°C | 16-38°C |
-| Flow Rate | 200-500 L/min | 0-600 L/min |
-| Pressure | 50-300 kPa | 0-350 kPa |
-| Conductivity | 13-15 µS/cm | 0-20 µS/cm |
-
-### Solution Volumes
-\`\`\`cpp
-float solutionAVolume = 1000.0;   // mL
-float solutionBVolume = 500.0;    // mL
-\`\`\`
+| Parameter      | Normal Range  | Critical Limits |
+| -------------- | ------------- | --------------- |
+| Temperature    | 35-40°C       | 16-38°C         |
+| Flow Rate      | 200-500 L/min | 0-600 L/min     |
+| Pressure       | 50-300 kPa    | 0-350 kPa       |
+| Conductivity   | 13-15 µS/cm   | 0-20 µS/cm      |
 
 ## 🔒 Safety Features
 
-### Automatic Safety Shutdowns
-- **Temperature Limits**: System stops if temperature exceeds 38°C or drops below 16°C
-- **High Pressure**: Automatic shutdown at pressures above 350 kPa
-- **Sensor Failures**: System stops if critical sensors fail
-- **Emergency Stop**: Manual override button for immediate shutdown
+Safety is the primary design consideration for this project.
 
-### Alert System
-- **Audio Alerts**: Buzzer notifications for critical conditions
-- **Visual Indicators**: LED status lights and LCD messages
-- **Remote Notifications**: Dashboard alerts and status updates
-- **Multi-level Warnings**: Progressive alerts before critical shutdowns
+-   **Automatic Shutdowns**: The system will automatically halt operations and enter a safe state if:
+    -   Temperature exceeds 38°C or drops below 16°C.
+    -   Pressure rises above the critical threshold of 350 kPa.
+    -   A critical sensor (e.g., temperature) fails to provide a reading.
+-   **Multi-Level Alerts**: The system provides progressive warnings through the buzzer, LEDs, and dashboard notifications before a critical shutdown occurs.
+-   **Manual Override**: The physical emergency stop button provides an immediate manual override to stop the system instantly.
 
-## 📊 Dashboard Features
+## 📈 Future Work & Advanced Features
 
-### Real-time Monitoring
-- **Circular Progress Indicators**: Visual representation of all sensor values
-- **Status Badges**: Color-coded system health indicators
-- **Auto-refresh**: Configurable update intervals (default: 2 seconds)
-- **Connection Status**: WiFi and device connectivity monitoring
+-   [ ] **Data Logging**: Integrate an SD card module to log treatment data locally for record-keeping and analysis.
+-   [ ] **Cloud Integration**: Use MQTT to send data to a cloud IoT platform (like Adafruit IO or Thingspeak) for remote access from anywhere.
+-   [ ] **Predictive Maintenance**: Log sensor drift and component usage (e.g., pump run-time) to predict when maintenance or recalibration is required.
+-   [ ] **User Profiles**: Add functionality to the dashboard to save and load different treatment profiles.
+        
+## ⚠️ Medical Device Disclaimer
 
-### Control Interface
-- **Remote Start/Stop**: Control system operation from dashboard
-- **Manual Refresh**: Force immediate data update
-- **Parameter Monitoring**: Track all critical values in real-time
+> **IMPORTANT**: This project is intended for educational, research, and development purposes only. It is **NOT** a certified medical device. Before use in any clinical or patient-care application, the system must undergo rigorous testing, validation, and certification to comply with all applicable medical device regulations and safety standards (e.g., IEC 60601, FDA regulations). The author is not responsible for any misuse of this project.
 
-### Alert Management
-- **Visual Alerts**: Color-coded warnings and errors
-- **Parameter Thresholds**: Configurable alert limits
-- **Alert History**: Track and review past alerts
+## ✍️ Author
 
-## 🔧 Troubleshooting
-
-### Common Issues
-
-#### WiFi Connection Problems
-\`\`\`cpp
-// Check serial monitor output for connection status
-Serial.println("WiFi connected!");
-Serial.print("IP address: ");
-Serial.println(WiFi.localIP());
-\`\`\`
-
-#### Sensor Reading Issues
-- **Temperature**: Verify DS18B20 wiring and 4.7kΩ pull-up resistor
-- **Flow**: Check interrupt pin connection and sensor power
-- **Pressure/Conductivity**: Verify analog pin connections and sensor power
-
-#### Dashboard Connection Issues
-1. Verify IP address configuration matches between ESP32 and computer
-2. Check that both devices are on the same network
-3. Ensure firewall allows HTTP connections on configured port
-4. Monitor ESP32 serial output for HTTP error codes
-
-### Debug Mode
-Enable detailed logging:
-\`\`\`cpp
-Serial.begin(115200);
-Serial.setDebugOutput(true);
-\`\`\`
-
-## 🛠️ Maintenance
-
-### Regular Maintenance Schedule
-
-#### Daily
-- [ ] Visual inspection of all connections
-- [ ] Verify sensor readings are within normal ranges
-- [ ] Test emergency stop function
-
-#### Weekly
-- [ ] Clean flow sensor to remove debris
-- [ ] Check all electrical connections for corrosion
-- [ ] Verify relay operation
-
-#### Monthly
-- [ ] Calibrate all sensors with known references
-- [ ] Check software for updates
-- [ ] Inspect wiring for wear or damage
-- [ ] Test all alarm functions
-
-#### Quarterly
-- [ ] Complete system validation
-- [ ] Replace consumable components
-- [ ] Update documentation
-- [ ] Conduct training review
-
-## ⚠️ Important Safety Warnings
-
-> **MEDICAL DEVICE WARNING**: This system is designed for educational and development purposes. Before using in any medical application, ensure compliance with all applicable medical device regulations and standards.
-
-> **ELECTRICAL SAFETY**: Always disconnect power before making any electrical connections. Use proper grounding and isolation techniques.
-
-> **WATER SAFETY**: Ensure all electrical components are properly sealed and protected from water ingress.
-
-> **EMERGENCY PROCEDURES**: Always have manual override capabilities and emergency shutdown procedures in place.
-
-## 📈 Advanced Features
-
-### Data Logging
-Add SD card support for treatment record keeping:
-\`\`\`cpp
-#include <SD.h>
-#include <SPI.h>
-
-void logData(float temp, float flow, float pressure, float conductivity) {
-  File dataFile = SD.open("treatment_log.csv", FILE_WRITE);
-  // Implementation details in  guide
-}
-\`\`\`
-
-### Remote Monitoring
-- **MQTT Integration**: Connect to IoT platforms
-- **Cloud Connectivity**: Remote access via internet
-- **Mobile Applications**: Smartphone monitoring capabilities
-
-### Predictive Maintenance
-- **Trend Analysis**: Monitor parameter drift over time
-- **Predictive Alerts**: Early warning system for maintenance needs
-- **Usage Statistics**: Track system utilization and performance
-
-## 🤝 Contributing
-
-We welcome contributions to improve the Mobile Kidney Washing Unit project!
-
-### How to Contribute
-1. Fork the repository
-2. Create a feature branch (\`git checkout -b feature/AmazingFeature\`)
-3. Commit your changes (\`git commit -m 'Add some AmazingFeature'\`)
-4. Push to the branch (\`git push origin feature/AmazingFeature\`)
-5. Open a Pull Request
-
-### Development Guidelines
-- Follow existing code style and conventions
-- Add comments for complex functionality
-- Test all changes thoroughly
-- Update documentation as needed
-- Ensure safety features remain intact
-
-### Reporting Issues
-- Use the issue tracker for bug reports and feature requests
-- Provide detailed information about your setup and the issue
-- Include serial monitor output when reporting bugs
-- Specify hardware configuration and software versions
+-   **10xRashed** - [GitHub Profile](https://github.com/10xrashed)
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-\`\`\`
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
